@@ -28,8 +28,21 @@ void handle(Socket *socket)
 	// say hello to client
 	socket->write("Hello\r\n");
 
+    bool hasCommand = false;
+    string command = "";
+
     while(socket->readline(line, MAXPATH)) {
-        cout << line;
+        // Filter on first space delimiter
+        if(!hasCommand) {
+            if(line[0] != ' ') command += line[0];
+            else{
+                // Validate command and initiate it.
+                hasCommand = true;
+            }
+        }else{
+            // do something
+
+        }
     }
 
     cout << endl;
