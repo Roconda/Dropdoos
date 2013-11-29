@@ -8,32 +8,34 @@
 #include <fstream>
 using namespace std;
 
+#include <string>
+
 // our own modules
 #include "Socket.h"
 
 // constants
-static const int MAXPATH = 256; // Maximale lengte van padnaam
+static const int MAXPATH = 1; // Maximale lengte van padnaam
 static const int TCP_PORT = 1080;
 
 //=============================================================================
 void handle(Socket *socket)
 //=============================================================================
 {
-	char line[MAXPATH + 1];
+    char line[MAXPATH + 1];
 
 	cout << "Connected!\r\n";
 
 	// say hello to client
 	socket->write("Hello\r\n");
 
-	// read first line of request
-	if(socket->readline(line, MAXPATH))
-	{
-		// echo request to terminal
-		cout << "Get request: " << line << "\r\n";
-		// say bye to client
-		socket->write("BYE!\r\n");
-	}
+    while(socket->readline(line, MAXPATH)) {
+        cout << line;
+    }
+
+    cout << endl;
+
+    socket->write("BYE!\r\n");
+
 	// close and delete socket (created by server's accept)
 	delete socket;
 }
