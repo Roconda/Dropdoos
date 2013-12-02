@@ -8,5 +8,9 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += Socket.h
-SOURCES += server.cpp Socket.cpp
+HEADERS += Socket.h \
+    commands/icommand.h \
+    commands/commandinfo.h
+SOURCES += server.cpp Socket.cpp \
+    commands/icommand.cpp \
+    commands/commandinfo.cpp
