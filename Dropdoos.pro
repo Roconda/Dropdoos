@@ -7,10 +7,20 @@ TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 
+# Use unsupported features
+QMAKE_CXXFLAGS += -std=c++0x
+
 # Input
 HEADERS += Socket.h \
     commands/icommand.h \
-    commands/commandinfo.h
+    commands/commandinfo.h \
+    commands/commandquit.h \
+    commands/domakecommand.h \
+    commands/commandnotfound.h
 SOURCES += server.cpp Socket.cpp \
     commands/icommand.cpp \
-    commands/commandinfo.cpp
+    commands/commandinfo.cpp \
+    commands/commandquit.cpp \
+    commands/domakecommand.cpp \
+    commands/commandnotfound.cpp
+

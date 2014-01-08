@@ -7,10 +7,6 @@ CommandInfo::CommandInfo()
 {
 }
 
-bool CommandInfo::isCommand(const std::string* command){
-    return true;
-}
-
 void CommandInfo::read(char c){
 
 }

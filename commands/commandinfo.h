@@ -3,12 +3,12 @@
 
 #include "icommand.h"
 #include <string>
+#include "Socket.h"
 
 class CommandInfo : public ICommand
 {
 public:
     CommandInfo();
-    bool isCommand(const std::string* command);
     void read(char c);
     std::string execute();
 };

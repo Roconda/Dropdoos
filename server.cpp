@@ -9,58 +9,72 @@
 using namespace std;
 
 #include <string>
+#include <vector>
+#include <string.h>
 
 // our own modules
 #include "Socket.h"
-#include "commands/commandinfo.h"
+#include "commands/domakecommand.h"
+#include "commands/commandnotfound.h"
 #include "commands/icommand.h"
 
 // constants
-static const int MAXPATH = 1; // Maximale lengte van padnaam
-static const int TCP_PORT = 1080;
+static const int MAXPATH = 1024; // Maximale lengte van padnaam
+static const int TCP_PORT = 10800;
+
+vector<string> &split(const string &s, char delim, vector<string> &elems) {
+    std::stringstream ss(s);
+    string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+
+vector<string> split(const string &s, char delim) {
+    vector<string> elems;
+    split(s, delim, elems);
+    return elems;
+}
+
+ICommand& getCommand(char* line) {
+    string str(line);
+    string buffer;
+    stringstream ss(str);
+
+    vector<string> splittedItems;
+
+    // Voeg toe aan vector.
+    while (ss >> buffer)
+        splittedItems.push_back(buffer);
+
+    // We willen alleen elementen met waarde hebben.
+    splittedItems.shrink_to_fit();
+
+    // Roep factory aan.
+    return *DoMakeCommand::makeCommand(splittedItems.front());;
+}
 
 //=============================================================================
 void handle(Socket *socket)
 //=============================================================================
 {
-    char line[MAXPATH + 1];
-
-    cout << "Connected!\r\n";
-
-    // Local variables to initiate the actual command object
-    signed int hasCommand = -1;
-    string* textCommand = new string();
-    ICommand* command = NULL;
-
+    char line[MAXPATH];
 
     while(socket->readline(line, MAXPATH)) {
-        // Filter on first space delimiter
-        if(hasCommand == -1) {
-            if(line[0] != ' ') textCommand += line[0];
-            else{
-                // Validate command and initiate it.
-                hasCommand = 0; // if is validated
-                command = new CommandInfo();
-            }
-        }else{
-            // do something
-            hasCommand = 1;
+        ICommand& command = getCommand(line);
 
-        }
-    }
+        cout << "C: " << command.execute().c_str();
 
-    // Initiate command if found
-    if(command != NULL){
-        const char* message = command->execute().c_str();
-        socket->write(message);
-    }else{
-        socket->write("Command not found\r\n");
+        socket->write(command.execute().c_str());
     }
 
     cout << endl;
 
+    handle(socket);
     // close and delete socket (created by server's accept)
-    delete socket;
+    //delete socket;
 }
 
 //=============================================================================
@@ -73,6 +87,7 @@ int main(int argc, const char * argv[])
     ServerSocket serverSocket(TCP_PORT);
     // WAIT FOR CONNECTION FROM CLIENT; WILL CREATE NEW SOCKET
     cout << "Server listening\r\n";
+
     while(Socket *socket = serverSocket.accept())
     {
         // COMMUNICATE WITH CLIENT OVER NEW SOCKET
