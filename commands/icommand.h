@@ -8,8 +8,12 @@ class ICommand
 {
 public:
     ICommand();
+    void setSocket(Socket* s);
     virtual void read(char c) = 0;
     virtual std::string execute() = 0;
+
+    //properties
+    Socket* sock;
 };
 
 #endif // ICOMMAND_H
