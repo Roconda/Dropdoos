@@ -23,22 +23,6 @@ using namespace std;
 static const int MAXPATH = 1024; // Maximale lengte van padnaam
 static const int TCP_PORT = 1080;
 
-vector<string> &split(const string &s, char delim, vector<string> &elems) {
-	std::stringstream ss(s);
-	string item;
-	while (std::getline(ss, item, delim)) {
-		elems.push_back(item);
-	}
-	return elems;
-}
-
-
-vector<string> split(const string &s, char delim) {
-	vector<string> elems;
-	split(s, delim, elems);
-	return elems;
-}
-
 ICommand& getCommand(char* line) {
 	string str(line);
 	string buffer;
@@ -67,13 +51,9 @@ void handle(Socket *socket)
 		ICommand& command = getCommand(line);
 		command.setSocket(socket);
 
-		cout << "Got command";
+		cout << "Got command\r\n";
 
 		if(!command.execute()) break;
-
-		//cout << "Command: " << command.execute().c_str() << "\r\n";
-
-		//socket->write(command.execute().c_str());
 
 	}
 

@@ -9,12 +9,8 @@ DoMakeCommand::DoMakeCommand()
 }
 
 ICommand* DoMakeCommand::makeCommand(std::string& name) {
-	try{
-		if(name.compare("quit") == 0)
-			return new CommandQuit();
-		else
-			return new CommandNotFound();
-	}catch(...){
+	if(name.compare("quit") == 0)
+		return new CommandQuit();
+	else
 		return new CommandNotFound();
-	}
 }
