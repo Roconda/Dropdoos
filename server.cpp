@@ -63,23 +63,17 @@ void handle(Socket *socket)
 {
 	char line[MAXPATH];
 
-	// Connection is lost, accept a new
-	if (socket->readline(line, MAXPATH) == 0) {
-		cout << "Connection unexpectedly lost\r\n";
-		return;
-	}
-
-	while(socket->readline(line, MAXPATH)) {
+	while(socket->readline(line, MAXPATH) != 0) {
 		ICommand& command = getCommand(line);
+		command.setSocket(socket);
 
-		cout << "C: " << command.execute().c_str();
+		cout << "Command: " << command.execute().c_str() << "\r\n";
 
 		socket->write(command.execute().c_str());
+
 	}
 
-	cout << endl;
-
-	handle(socket);
+	cout << "End of handle\r\n";
 }
 
 //=============================================================================
@@ -95,6 +89,8 @@ int main(int argc, const char * argv[])
 
 	while(Socket *socket = serverSocket.accept())
 	{
+		cout << "Client connected\r\n";
+
 		// COMMUNICATE WITH CLIENT OVER NEW SOCKET
 		handle(socket);
 
