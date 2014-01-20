@@ -67,9 +67,13 @@ void handle(Socket *socket)
 		ICommand& command = getCommand(line);
 		command.setSocket(socket);
 
-		cout << "Command: " << command.execute().c_str() << "\r\n";
+		cout << "Got command";
 
-		socket->write(command.execute().c_str());
+		if(!command.execute()) break;
+
+		//cout << "Command: " << command.execute().c_str() << "\r\n";
+
+		//socket->write(command.execute().c_str());
 
 	}
 
@@ -82,19 +86,23 @@ void handle(Socket *socket)
 int main(int argc, const char * argv[])
 //=============================================================================
 {
-	// CREATE A SERVER SOCKET
-	ServerSocket serverSocket(TCP_PORT);
-	// WAIT FOR CONNECTION FROM CLIENT; WILL CREATE NEW SOCKET
-	cout << "Server listening\r\n";
+	while(true) {
+		// CREATE A SERVER SOCKET
+		ServerSocket* serverSocket = new ServerSocket(TCP_PORT);
+		// WAIT FOR CONNECTION FROM CLIENT; WILL CREATE NEW SOCKET
+		cout << "Server listening\r\n";
 
-	while(Socket *socket = serverSocket.accept())
-	{
-		cout << "Client connected\r\n";
+		while(Socket *socket = serverSocket->accept())
+		{
+			cout << "Client connected\r\n";
 
-		// COMMUNICATE WITH CLIENT OVER NEW SOCKET
-		handle(socket);
+			// COMMUNICATE WITH CLIENT OVER NEW SOCKET
+			handle(socket);
 
-		cout << "Server listening again\r\n";
+			cout << "Server listening again\r\n";
+		}
+
+		delete serverSocket;
 	}
 	return 0;
 }

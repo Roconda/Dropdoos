@@ -8,6 +8,8 @@ void CommandQuit::read(char c){
 
 }
 
-string CommandQuit::execute() {
-    return "Het werkt!\r\n";
+bool CommandQuit::execute() {
+    sock->close();
+
+    return false;
 }

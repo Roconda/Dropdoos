@@ -7,7 +7,7 @@ class CommandNotFound : public ICommand
 public:
     CommandNotFound();
     void read(char c);
-    std::string execute();
+    bool execute();
 };
 
 #endif // COMMANDNOTFOUND_H

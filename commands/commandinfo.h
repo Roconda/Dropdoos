@@ -10,7 +10,7 @@ class CommandInfo : public ICommand
 public:
     CommandInfo();
     void read(char c);
-    std::string execute();
+    bool execute();
 };
 
 #endif // COMMANDINFO_H

@@ -10,7 +10,7 @@ public:
     CommandQuit();
     bool isCommand(const std::string* command);
     void read(char c);
-    std::string execute();
+    bool execute();
 };
 
 #endif // COMMANDQUIT_H
