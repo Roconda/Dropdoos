@@ -2,8 +2,7 @@
 #define ICOMMAND_H
 
 #include <string>
-#include <regex>
-#include "Socket.h"
+#include "../Socket.h"
 
 class ICommand
 {

@@ -3,7 +3,7 @@
 
 #include "icommand.h"
 #include <string>
-#include "Socket.h"
+#include "../Socket.h"
 
 class CommandInfo : public ICommand
 {
