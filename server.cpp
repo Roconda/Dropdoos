@@ -11,6 +11,7 @@ using namespace std;
 #include <string>
 #include <vector>
 #include <string.h>
+#include <sstream>
 
 // our own modules
 #include "Socket.h"
