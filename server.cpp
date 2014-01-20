@@ -21,61 +21,65 @@ using namespace std;
 
 // constants
 static const int MAXPATH = 1024; // Maximale lengte van padnaam
-static const int TCP_PORT = 10800;
+static const int TCP_PORT = 1080;
 
 vector<string> &split(const string &s, char delim, vector<string> &elems) {
-    std::stringstream ss(s);
-    string item;
-    while (std::getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-    return elems;
+	std::stringstream ss(s);
+	string item;
+	while (std::getline(ss, item, delim)) {
+		elems.push_back(item);
+	}
+	return elems;
 }
 
 
 vector<string> split(const string &s, char delim) {
-    vector<string> elems;
-    split(s, delim, elems);
-    return elems;
+	vector<string> elems;
+	split(s, delim, elems);
+	return elems;
 }
 
 ICommand& getCommand(char* line) {
-    string str(line);
-    string buffer;
-    stringstream ss(str);
+	string str(line);
+	string buffer;
+	stringstream ss(str);
 
-    vector<string> splittedItems;
+	vector<string> splittedItems;
 
-    // Voeg toe aan vector.
-    while (ss >> buffer)
-        splittedItems.push_back(buffer);
+	// Voeg toe aan vector.
+	while (ss >> buffer)
+		splittedItems.push_back(buffer);
 
-    // We willen alleen elementen met waarde hebben.
-    splittedItems.shrink_to_fit();
+	// We willen alleen elementen met waarde hebben.
+	//splittedItems.shrink_to_fit();
 
-    // Roep factory aan.
-    return *DoMakeCommand::makeCommand(splittedItems.front());;
+	// Roep factory aan.
+	return *DoMakeCommand::makeCommand(splittedItems.front());;
 }
 
 //=============================================================================
 void handle(Socket *socket)
 //=============================================================================
 {
-    char line[MAXPATH];
+	char line[MAXPATH];
 
-    while(socket->readline(line, MAXPATH)) {
-        ICommand& command = getCommand(line);
+	// Connection is lost, accept a new
+	if (socket->readline(line, MAXPATH) == 0) {
+		cout << "Connection unexpectedly lost\r\n";
+		return;
+	}
 
-        cout << "C: " << command.execute().c_str();
+	while(socket->readline(line, MAXPATH)) {
+		ICommand& command = getCommand(line);
 
-        socket->write(command.execute().c_str());
-    }
+		cout << "C: " << command.execute().c_str();
 
-    cout << endl;
+		socket->write(command.execute().c_str());
+	}
 
-    handle(socket);
-    // close and delete socket (created by server's accept)
-    //delete socket;
+	cout << endl;
+
+	handle(socket);
 }
 
 //=============================================================================
@@ -84,17 +88,18 @@ void handle(Socket *socket)
 int main(int argc, const char * argv[])
 //=============================================================================
 {
-    // CREATE A SERVER SOCKET
-    ServerSocket serverSocket(TCP_PORT);
-    // WAIT FOR CONNECTION FROM CLIENT; WILL CREATE NEW SOCKET
-    cout << "Server listening\r\n";
+	// CREATE A SERVER SOCKET
+	ServerSocket serverSocket(TCP_PORT);
+	// WAIT FOR CONNECTION FROM CLIENT; WILL CREATE NEW SOCKET
+	cout << "Server listening\r\n";
 
-    while(Socket *socket = serverSocket.accept())
-    {
-        // COMMUNICATE WITH CLIENT OVER NEW SOCKET
-        handle(socket);
-        cout << "Server listening again\r\n";
-    }
-    return 0;
+	while(Socket *socket = serverSocket.accept())
+	{
+		// COMMUNICATE WITH CLIENT OVER NEW SOCKET
+		handle(socket);
+
+		cout << "Server listening again\r\n";
+	}
+	return 0;
 }
 
