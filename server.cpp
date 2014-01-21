@@ -6,6 +6,7 @@
 // system modules
 #include <iostream>
 #include <fstream>
+#include <memory>
 using namespace std;
 
 #include <string>
@@ -46,14 +47,30 @@ void handle(Socket *socket)
 //=============================================================================
 {
 	char line[MAXPATH];
+	short int state = 0;
+	ICommand* command;
 
 	while(socket->readline(line, MAXPATH) != 0) {
-		ICommand& command = getCommand(line);
-		command.setSocket(socket);
+		// Pointer has been deleted, set state to 0
+		if(command == NULL) state = 0;
 
-		cout << "Got command\r\n";
+		// check if command is found
+		if(state == 0) {
+			state = 1;
+			command = &getCommand(line);
+			command->setSocket(socket);
+		}else if(strcmp(line, "EOC") != 0){
+			// read
+			cout << "State read\r\n";
 
-		if(!command.execute()) break;
+		}else{
+			// end of command reached
+			if(!command->execute()) break;
+
+			// delete pointer and mark as deleted
+			delete command;
+			command = NULL;
+		}
 
 	}
 
@@ -80,6 +97,7 @@ int main(int argc, const char * argv[])
 			handle(socket);
 
 			cout << "Server listening again\r\n";
+
 		}
 
 		delete serverSocket;

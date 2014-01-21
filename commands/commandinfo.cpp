@@ -12,6 +12,5 @@ void CommandInfo::read(char c){
 }
 
 bool CommandInfo::execute() {
-    //return "Het werkt!\r\n";
 	return true;
 }
