@@ -1,7 +1,7 @@
 #ifndef COMMANDINFO_H
 #define COMMANDINFO_H
 
-#include "icommand.h"
+#include "ICommand.h"
 #include <string>
 #include "../Socket.h"
 

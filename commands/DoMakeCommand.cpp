@@ -1,7 +1,7 @@
-#include "domakecommand.h"
-#include "commandquit.h"
-#include "commandinfo.h"
-#include "commandnotfound.h"
+#include "DoMakeCommand.h"
+#include "CommandQuit.h"
+#include "CommandInfo.h"
+#include "CommandNotFound.h"
 #include "string.h"
 #include "iostream"
 

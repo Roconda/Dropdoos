@@ -1,7 +1,7 @@
 #ifndef DOMAKECOMMAND_H
 #define DOMAKECOMMAND_H
 
-#include "icommand.h"
+#include "ICommand.h"
 
 class DoMakeCommand
 {

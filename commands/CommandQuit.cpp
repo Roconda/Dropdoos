@@ -1,4 +1,4 @@
-#include "commandquit.h"
+#include "CommandQuit.h"
 
 CommandQuit::CommandQuit()
 {

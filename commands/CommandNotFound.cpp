@@ -1,4 +1,4 @@
-#include "commandnotfound.h"
+#include "CommandNotFound.h"
 
 CommandNotFound::CommandNotFound()
 {

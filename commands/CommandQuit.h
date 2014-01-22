@@ -1,6 +1,6 @@
 #ifndef COMMANDQUIT_H
 #define COMMANDQUIT_H
-#include "icommand.h"
+#include "ICommand.h"
 #include "../Socket.h"
 #include <string>
 

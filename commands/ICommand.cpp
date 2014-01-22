@@ -1,4 +1,4 @@
-#include "icommand.h"
+#include "ICommand.h"
 
 
 ICommand::ICommand()

@@ -1,6 +1,6 @@
 #ifndef COMMANDNOTFOUND_H
 #define COMMANDNOTFOUND_H
-#include "icommand.h"
+#include "ICommand.h"
 
 class CommandNotFound : public ICommand
 {

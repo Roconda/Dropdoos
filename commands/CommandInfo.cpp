@@ -1,4 +1,4 @@
-#include "commandinfo.h"
+#include "CommandInfo.h"
 #include <iostream>
 
 using namespace std;

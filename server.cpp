@@ -14,9 +14,9 @@ using namespace std;
 
 // our own modules
 #include "Socket.h"
-#include "commands/domakecommand.h"
-#include "commands/commandnotfound.h"
-#include "commands/icommand.h"
+#include "commands/DoMakeCommand.h"
+#include "commands/CommandNotFound.h"
+#include "commands/ICommand.h"
 
 // constants
 static const int MAXPATH = 1024; // Maximale lengte van padnaam
