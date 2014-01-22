@@ -9,8 +9,7 @@ void CommandQuit::read(char c){
 }
 
 bool CommandQuit::execute() {
-	sock->writeline("0\r\n");
-
+	sock->writeline("0");
     sock->close();
 
     return false;

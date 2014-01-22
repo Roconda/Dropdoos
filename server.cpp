@@ -5,8 +5,6 @@
 
 // system modules
 #include <iostream>
-#include <fstream>
-#include <memory>
 using namespace std;
 
 #include <string>
@@ -52,7 +50,7 @@ void handle(Socket *socket)
 
 	while(socket->readline(line, MAXPATH) != 0) {
 		// Pointer has been deleted, set state to 0
-		if(command == NULL) state = 0;
+		if(command == nullptr) state = 0;
 
 		// check if command is found
 		if(state == 0) {
@@ -69,7 +67,7 @@ void handle(Socket *socket)
 
 			// delete pointer and mark as deleted
 			delete command;
-			command = NULL;
+			command = nullptr;
 		}
 
 	}
