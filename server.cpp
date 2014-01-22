@@ -18,9 +18,19 @@ using namespace std;
 #include "commands/CommandNotFound.h"
 #include "commands/ICommand.h"
 
+#include <stdio.h>
+#ifdef WINDOWS
+    #include <direct.h>
+    #define GetCurrentDir _getcwd
+#else
+    #include <unistd.h>
+    #define GetCurrentDir getcwd
+#endif
+
 // constants
 static const int MAXPATH = 1024; // Maximale lengte van padnaam
 static const int TCP_PORT = 1080;
+static char BASE_PATH[FILENAME_MAX];
 
 ICommand& getCommand(char* line) {
 	string str(line);
@@ -49,6 +59,7 @@ void handle(Socket *socket)
 	ICommand* command;
 
 	while(socket->readline(line, MAXPATH) != 0) {
+
 		// Pointer has been deleted, set state to 0
 		if(command == nullptr) state = 0;
 
@@ -57,13 +68,17 @@ void handle(Socket *socket)
 			state = 1;
 			command = &getCommand(line);
 			command->setSocket(socket);
-		}else if(strcmp(line, "EOC") != 0){
-			// read
-			cout << "State read\r\n";
 
+			cout << "Command: " << line << " has been called\r\n";
+		}else if(strcmp(line, "EOC") != 0){
+			// Command parameters
+			command->read(line);
 		}else{
 			// end of command reached
 			if(!command->execute()) break;
+
+			// empty line requirement
+			socket->writeline("");
 
 			// delete pointer and mark as deleted
 			delete command;
@@ -81,6 +96,10 @@ void handle(Socket *socket)
 int main(int argc, const char * argv[])
 //=============================================================================
 {
+	// set relative path
+	if (!GetCurrentDir(BASE_PATH, sizeof(BASE_PATH))) cout << "Could not determine relative path";
+	DoMakeCommand::BASE_PATH = BASE_PATH;
+
 	while(true) {
 		// CREATE A SERVER SOCKET
 		ServerSocket* serverSocket = new ServerSocket(TCP_PORT);
