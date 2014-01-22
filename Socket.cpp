@@ -93,7 +93,7 @@ size_t Socket::readline(char *buf, size_t maxlen)
 	{
 		if (n == 0) break;
 		if (c == '\n') break;
-		if (c != '\r') buf[len++] = c;
+		else buf[len++] = c;
 		if (len >= maxlen) break;
 	}
 	buf[len] = 0;
@@ -112,7 +112,7 @@ size_t Socket::readline(wchar_t *buf, size_t maxlen)
 	{
 		if (n == 0) break;
 		if (c == '\n') break;
-		if (c != '\r') buf[len++] = c;
+		else buf[len++] = c;
 		if (len >= maxlen) break;
 	}
 	buf[len] = 0;
