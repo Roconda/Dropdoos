@@ -7,10 +7,10 @@ Eisen server
 
 * ~~Wacht op een tcp-poort op verbinding van een client~~
 * Leest opdracht, handelt die af en stuurt informatie terug naar client
-* Houdt verbinding open totdat de client opdracht tot sluiten geeft
-* Draait op de achtergrond (heeft geen user-interface)
-* Hoeft niet multithreaded
-* De server is niet door een client af te sluiten.
+* ~~Houdt verbinding open totdat de client opdracht tot sluiten geeft~~
+* ~~Draait op de achtergrond (heeft geen user-interface)~~
+* ~~Hoeft niet multithreaded~~
+* ~~De server is niet door een client af te sluiten.~~
 
 
 
@@ -25,17 +25,17 @@ Eisen client
 
 Eisen protocol
 --------
-* Het is een applicatieprotocol op tcp.
+* ~~Het is een applicatieprotocol op tcp.~~
 * Het protocol is afgestemd met een andere groep.
 * Er is een duidelijke beschrijving van het protocol.
 * De volgende opdrachten zijn in iedere geval geïmplementeerd:
-* INFO geeft naam en versie van de server
+* ~~INFO geeft naam en versie van de server~~
 * DIR dirname geeft een lijst van bestandsnamen in een directory, bijvoorbeeld DIR C:\TEST
 * GET om een bestand van de server op te halen
 * PUT om een bestand naar de server te sturen
 * DEL om een bestand op de server te verwijderen
 * REN om een bestand op de server te hernoemen
-* QUIT sluit de verbinding
+* ~~QUIT sluit de verbinding~~
 * Alle communicatie bestaat uit leesbare regels tekst, afgesloten met een newline ('\n') en geen carriage return ('\r')
 * Antwoorden van de server kunnen uit meerdere, niet-lege regels bestaan
 * Aan het eind van een antwoord stuurt de server altijd een lege regel
@@ -59,7 +59,7 @@ Technische eisen
 * De server functioneel
 * Er is een duidelijke verdeling in klasses
 * Namen van klasses, typen, variabelen en functies zijn logisch, duidelijk en consequent
-* Elke klasse heeft een .ccp en een .h
+* Elke klasse heeft een .cpp en een .h
 * De code is voorzien van zinvol commentaar
 * In elke .h-file worden de niet-private onderdelen van de klasse beschreven voor de programmeur.
 * Er zijn aantoonbaar geen memory leaks
