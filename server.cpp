@@ -74,7 +74,13 @@ void handle(Socket *socket)
 			command->read(line);
 		}else{
 			// end of command reached
-			if(!command->execute()) break;
+			try{
+				// executing command
+				if(!command->execute()) break;
+			}catch(...) {
+				// something unexpected happened
+				socket->writeline("10");
+			}
 
 			// empty line requirement
 			socket->writeline("");
