@@ -5,18 +5,58 @@
  *      Author: tim
  */
 
+#include "boost/filesystem/operations.hpp"
+#include "boost/filesystem/path.hpp"
+#include "boost/progress.hpp"
+
+#include <iostream>
+#include <string>
+
+#include "../Settings.h"
 #include "CommandDir.h"
+
+namespace fs = boost::filesystem;
 
 CommandDir::CommandDir() {
 
 }
 
-void CommandDir::read(char c){
+void CommandDir::read(char* c){
+	choosenDirectory = new char[sizeof(c)+1];
 
+	// ignore directory traversing
+	strncpy(choosenDirectory, c, sizeof(c)+1);
 }
 
 bool CommandDir::execute() {
+	fs::directory_iterator end_iter;
+	const char* fullPathBuff;
 
-	return false;
+	// command recognized
+	sock->writeline("0");
+
+	if(choosenDirectory == nullptr)
+		fullPathBuff = Settings::getInstance().getCwd();
+	else
+		fullPathBuff = string(Settings::getInstance().getCwd()).append(choosenDirectory).c_str();
+
+	// check if path exists and is a directory
+	if(!fs::exists(fullPathBuff) || !fs::is_directory(fullPathBuff)) {
+		sock->writeline("1");
+		return true;
+	}
+
+	for( fs::directory_iterator dir_iter(fullPathBuff) ; dir_iter != end_iter ; ++dir_iter) {
+		if (fs::is_regular_file(dir_iter->status()) || fs::is_directory(dir_iter->status()) ) {
+			std::string buff(":");
+			sock->writeline(buff.append(dir_iter->path().filename().c_str()).c_str());
+		}
+	}
+
+	sock->writeline("0");
+	return true;
 }
 
+CommandDir::~CommandDir(){
+	delete choosenDirectory;
+}

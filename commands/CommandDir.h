@@ -13,8 +13,12 @@
 class CommandDir : public ICommand {
 public:
 	CommandDir();
-    void read(char c);
+	~CommandDir();
+    void read(char* c);
     bool execute();
+
+    //properties
+    char* choosenDirectory;
 };
 
 #endif /* COMMANDDIR_H_ */

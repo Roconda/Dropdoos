@@ -9,7 +9,7 @@ class CommandInfo : public ICommand
 {
 public:
     CommandInfo();
-    void read(char c);
+    void read(char* c);
     bool execute();
 };
 
