@@ -7,7 +7,7 @@ CommandInfo::CommandInfo()
 {
 }
 
-void CommandInfo::read(char c){
+void CommandInfo::read(char* c){
 
 }
 

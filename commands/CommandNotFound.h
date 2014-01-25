@@ -6,7 +6,7 @@ class CommandNotFound : public ICommand
 {
 public:
     CommandNotFound();
-    void read(char c);
+    void read(char* c);
     bool execute();
 };
 

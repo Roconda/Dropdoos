@@ -1,4 +1,5 @@
 #include "DoMakeCommand.h"
+#include "CommandDir.h"
 #include "CommandQuit.h"
 #include "CommandInfo.h"
 #include "CommandNotFound.h"
@@ -14,6 +15,8 @@ ICommand* DoMakeCommand::makeCommand(std::string& name) {
 		return new CommandQuit();
 	else if(name.compare("INFO") == 0){
 		return new CommandInfo();
+	}else if(name.compare("DIR") == 0) {
+		return new CommandDir();
 	}
 	else
 		return new CommandNotFound();

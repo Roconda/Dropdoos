@@ -9,7 +9,7 @@ class CommandQuit : public ICommand
 public:
     CommandQuit();
     bool isCommand(const std::string* command);
-    void read(char c);
+    void read(char* c);
     bool execute();
 };
 

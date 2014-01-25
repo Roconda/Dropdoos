@@ -30,7 +30,6 @@ using namespace std;
 // constants
 static const int MAXPATH = 1024; // Maximale lengte van padnaam
 static const int TCP_PORT = 1080;
-static char BASE_PATH[FILENAME_MAX];
 
 ICommand& getCommand(char* line) {
 	string str(line);
@@ -69,7 +68,7 @@ void handle(Socket *socket)
 			command = &getCommand(line);
 			command->setSocket(socket);
 
-			cout << "Command: " << line << " has been called\r\n";
+			cout << "Command: " << line << " has been called" << endl;
 		}else if(strcmp(line, "EOC") != 0){
 			// Command parameters
 			command->read(line);
@@ -96,9 +95,6 @@ void handle(Socket *socket)
 int main(int argc, const char * argv[])
 //=============================================================================
 {
-	// set relative path
-	if (!GetCurrentDir(BASE_PATH, sizeof(BASE_PATH))) cout << "Could not determine relative path";
-	DoMakeCommand::BASE_PATH = BASE_PATH;
 
 	while(true) {
 		// CREATE A SERVER SOCKET
@@ -114,7 +110,6 @@ int main(int argc, const char * argv[])
 			handle(socket);
 
 			cout << "Server listening again\r\n";
-
 		}
 
 		delete serverSocket;

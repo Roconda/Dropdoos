@@ -4,7 +4,7 @@ CommandQuit::CommandQuit()
 {
 }
 
-void CommandQuit::read(char c){
+void CommandQuit::read(char* c){
 
 }
 

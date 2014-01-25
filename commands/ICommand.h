@@ -10,7 +10,7 @@ public:
     ICommand();
     virtual ~ICommand();
     void setSocket(Socket* s);
-    virtual void read(char c) = 0;
+    virtual void read(char* c) = 0;
     virtual bool execute() = 0;
 
     //properties

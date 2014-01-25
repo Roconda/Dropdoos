@@ -4,7 +4,7 @@ CommandNotFound::CommandNotFound()
 {
 }
 
-void CommandNotFound::read(char c){
+void CommandNotFound::read(char* c){
     return;
 }
 
