@@ -18,8 +18,8 @@ Eisen client
 --------
 
 * Heeft een user-interface (tekst of grafisch)
-* Krijgt de naam of het ip-adres van de gewenste server van de gebruiker
-* Maakt verbinding met server als de gebruiker daar om vraagt.
+* ~~Krijgt de naam of het ip-adres van de gewenste server van de gebruiker~~
+* ~~Maakt verbinding met server als de gebruiker daar om vraagt.~~
 * ~~Stuurt namens de gebruiker opdrachten naar de server~~
 * Verwerkt de teruggestuurde resultaten en laat informatie zien aan de gebruiker.
 
@@ -30,15 +30,15 @@ Eisen protocol
 * ~~Er is een duidelijke beschrijving van het protocol.~~
 * De volgende opdrachten zijn in iedere geval geïmplementeerd:
 * ~~INFO geeft naam en versie van de server~~
-* DIR dirname geeft een lijst van bestandsnamen in een directory, bijvoorbeeld DIR C:\TEST
+* ~~DIR dirname geeft een lijst van bestandsnamen in een directory, bijvoorbeeld DIR C:\TEST~~
 * GET om een bestand van de server op te halen
 * PUT om een bestand naar de server te sturen
 * DEL om een bestand op de server te verwijderen
 * REN om een bestand op de server te hernoemen
 * ~~QUIT sluit de verbinding~~
-* Alle communicatie bestaat uit leesbare regels tekst, afgesloten met een newline ('\n') en geen carriage return ('\r')
+* ~~Alle communicatie bestaat uit leesbare regels tekst, afgesloten met een newline ('\n') en geen carriage return ('\r')~~
 * ~~Antwoorden van de server kunnen uit meerdere, niet-lege regels bestaan~~
-* Aan het eind van een antwoord stuurt de server altijd een lege regel
+* ~~Aan het eind van een antwoord stuurt de server altijd een lege regel~~
 * Bestandnamen met spaties en/of niet-ascii tekens geven geven geen problemen, bijvoorbeeld "Mijn ideeën".
 * Client en server kunnen elkaar niet laten vastlopen.
 * Storing of wegvallen van de verbinding moet geen vastlopers veroorzaken.
