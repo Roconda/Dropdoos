@@ -18,7 +18,7 @@ public:
     bool execute();
 
     //properties
-    char* choosenDirectory;
+    string choosenDirectory;
 };
 
 #endif /* COMMANDDIR_H_ */

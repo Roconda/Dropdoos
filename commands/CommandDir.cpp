@@ -18,14 +18,11 @@
 namespace fs = boost::filesystem;
 
 CommandDir::CommandDir() {
-
+	choosenDirectory = "";
 }
 
 void CommandDir::read(char* c){
-	choosenDirectory = new char[sizeof(c)+1];
-
-	// ignore directory traversing
-	strncpy(choosenDirectory, c, sizeof(c)+1);
+	choosenDirectory = string(c);
 }
 
 bool CommandDir::execute() {
@@ -35,8 +32,8 @@ bool CommandDir::execute() {
 	// command recognized
 	sock->writeline("0");
 
-	if(choosenDirectory == nullptr)
-		fullPathBuff = Settings::getInstance().getCwd();
+	if(choosenDirectory.size() == 0)
+		fullPathBuff = string(Settings::getInstance().getCwd()).c_str();
 	else
 		fullPathBuff = string(Settings::getInstance().getCwd()).append(choosenDirectory).c_str();
 
@@ -58,5 +55,5 @@ bool CommandDir::execute() {
 }
 
 CommandDir::~CommandDir(){
-	delete choosenDirectory;
+	//if(choosenDirectory != nullptr) delete choosenDirectory;
 }
