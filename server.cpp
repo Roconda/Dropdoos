@@ -14,22 +14,44 @@ using namespace std;
 
 // our own modules
 #include "Socket.h"
+#include "Settings.h"
 #include "commands/DoMakeCommand.h"
 #include "commands/CommandNotFound.h"
 #include "commands/ICommand.h"
 
 #include <stdio.h>
 #ifdef WINDOWS
-    #include <direct.h>
-    #define GetCurrentDir _getcwd
+	#include <windows.h>
 #else
-    #include <unistd.h>
-    #define GetCurrentDir getcwd
+	#include <signal.h>
 #endif
 
 // constants
-static const int MAXPATH = 1024; // Maximale lengte van padnaam
+static const int MAXPATH = 524288; // Maximale groote op de stack
 static const int TCP_PORT = 1080;
+
+
+/**
+ * These
+ */
+#ifdef WINDOWS
+// See http://msdn.microsoft.com/en-us/library/ms685049%28VS.85%29.aspx
+bool signalHandlerWindows(DWORD fdwCtrlType) {
+	delete ssocket;
+	return true;
+}
+#else
+void signalHandlerPosix(int signal) {
+	if(Settings::getInstance().currentSocket != nullptr)
+		Settings::getInstance().currentSocket->close();
+
+	// Remove objects
+	delete Settings::getInstance().currentSocket;
+	delete Settings::getInstance().serverSocket;
+
+	exit(0);
+}
+#endif
 
 ICommand& getCommand(char* line) {
 	string str(line);
@@ -41,9 +63,6 @@ ICommand& getCommand(char* line) {
 	// Voeg toe aan vector.
 	while (ss >> buffer)
 		splittedItems.push_back(buffer);
-
-	// We willen alleen elementen met waarde hebben.
-	//splittedItems.shrink_to_fit();
 
 	// Roep factory aan.
 	return *DoMakeCommand::makeCommand(splittedItems.front());;
@@ -109,21 +128,27 @@ int main(int argc, const char * argv[])
 
 	while(true) {
 		// CREATE A SERVER SOCKET
-		ServerSocket* serverSocket = new ServerSocket(TCP_PORT);
+		Settings::getInstance().serverSocket = new ServerSocket(TCP_PORT);
 		// WAIT FOR CONNECTION FROM CLIENT; WILL CREATE NEW SOCKET
 		cout << "Server listening\r\n";
 
-		while(Socket *socket = serverSocket->accept())
+		#ifdef WINDOWS
+			SetConsoleCtrlHandler( (PHANDLER_ROUTINE) signalHandlerWindows, TRUE );
+		#else
+			signal(SIGINT, signalHandlerPosix);
+		#endif
+
+		while((Settings::getInstance().currentSocket = Settings::getInstance().serverSocket->accept()))
 		{
 			cout << "Client connected\r\n";
 
 			// COMMUNICATE WITH CLIENT OVER NEW SOCKET
-			handle(socket);
+			handle(Settings::getInstance().currentSocket);
 
 			cout << "Server listening again\r\n";
 		}
 
-		delete serverSocket;
+		delete Settings::getInstance().serverSocket;
 	}
 	return 0;
 }

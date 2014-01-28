@@ -11,6 +11,7 @@
 #define MAX_APPENDED_SIZE 2048
 
 #include "stdio.h"
+#include "Socket.h"
 
 class Settings {
 	public:
@@ -21,6 +22,10 @@ class Settings {
 		}
 
 		const char* getCwd();
+
+		//properties
+		ServerSocket* serverSocket;
+		Socket* currentSocket;
 	private:
 		Settings();
 		Settings(Settings const&);

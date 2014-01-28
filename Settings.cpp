@@ -20,6 +20,7 @@
 #endif
 
 Settings::Settings(){
+	// Set working dir
 	if (!GetCurrentDir(rootDir, sizeof(rootDir))){
 		//TODO: Throw exception
 	}
