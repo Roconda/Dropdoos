@@ -32,16 +32,9 @@ static const int TCP_PORT = 1080;
 
 
 /**
- * These
+ * These methods handle interrupts and other signals.
  */
-#ifdef WINDOWS
-// See http://msdn.microsoft.com/en-us/library/ms685049%28VS.85%29.aspx
-bool signalHandlerWindows(DWORD fdwCtrlType) {
-	delete ssocket;
-	return true;
-}
-#else
-void signalHandlerPosix(int signal) {
+void signalHelper() {
 	if(Settings::getInstance().currentSocket != nullptr)
 		Settings::getInstance().currentSocket->close();
 
@@ -49,7 +42,20 @@ void signalHandlerPosix(int signal) {
 	delete Settings::getInstance().currentSocket;
 	delete Settings::getInstance().serverSocket;
 
-	exit(0);
+}
+#ifdef WINDOWS
+// See http://msdn.microsoft.com/en-us/library/ms685049%28VS.85%29.aspx
+// TODO: test on windows
+bool signalHandlerWindows(DWORD fdwCtrlType) {
+	signalHelper();
+
+	return true;
+}
+#else
+void signalHandlerPosix(int signal) {
+	signalHelper();
+
+	quick_exit(0);
 }
 #endif
 
