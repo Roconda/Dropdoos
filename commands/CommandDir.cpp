@@ -55,5 +55,4 @@ bool CommandDir::execute() {
 }
 
 CommandDir::~CommandDir(){
-	//if(choosenDirectory != nullptr) delete choosenDirectory;
 }
