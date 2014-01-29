@@ -33,7 +33,7 @@ Eisen protocol
 * ~~DIR dirname geeft een lijst van bestandsnamen in een directory, bijvoorbeeld DIR C:\TEST~~
 * GET om een bestand van de server op te halen
 * PUT om een bestand naar de server te sturen
-* DEL om een bestand op de server te verwijderen
+* ~~DEL om een bestand op de server te verwijderen~~
 * REN om een bestand op de server te hernoemen
 * ~~QUIT sluit de verbinding~~
 * ~~Alle communicatie bestaat uit leesbare regels tekst, afgesloten met een newline ('\n') en geen carriage return ('\r')~~

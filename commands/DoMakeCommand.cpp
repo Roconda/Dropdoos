@@ -3,6 +3,7 @@
 #include "CommandQuit.h"
 #include "CommandInfo.h"
 #include "CommandNotFound.h"
+#include "CommandDel.h"
 #include "string.h"
 #include "iostream"
 
@@ -17,6 +18,8 @@ ICommand* DoMakeCommand::makeCommand(std::string& name) {
 		return new CommandInfo();
 	else if(name.compare("DIR") == 0)
 		return new CommandDir();
+	else if(name.compare("DEL") == 0)
+		return new CommandDel();
 	else
 		return new CommandNotFound();
 }
