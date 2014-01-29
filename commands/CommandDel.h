@@ -7,6 +7,7 @@
 
 #ifndef COMMANDDEL_H_
 #define COMMANDDEL_H_
+
 #include "ICommand.h"
 
 class CommandDel : public ICommand {

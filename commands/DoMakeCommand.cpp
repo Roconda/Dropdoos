@@ -5,6 +5,7 @@
 #include "CommandNotFound.h"
 #include "CommandDel.h"
 #include "CommandRen.h"
+#include "CommandCreate.h"
 #include "string.h"
 #include "iostream"
 
@@ -23,6 +24,8 @@ ICommand* DoMakeCommand::makeCommand(std::string& name) {
 		return new CommandDel();
 	else if(name.compare("REN") == 0)
 		return new CommandRen();
+	else if(name.compare("CREATE") == 0)
+		return new CommandCreate();
 	else
 		return new CommandNotFound();
 }
