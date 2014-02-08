@@ -15,3 +15,5 @@
 # ignore user's project file
 Dropdoos.pro.user
 Makefile
+/Debug
+/Release
