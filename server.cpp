@@ -27,7 +27,7 @@ using namespace std;
 #endif
 
 // constants
-static const int MAXPATH = 524288; // Maximale groote op de stack
+static const int MAXPATH = 524288;
 static const int TCP_PORT = 1080;
 
 
