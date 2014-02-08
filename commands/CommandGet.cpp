@@ -46,7 +46,7 @@ bool CommandGet::execute(){
 	// return filesize to client
 	sock->writeline((stream.str()).c_str());
 
-	int buffSize = 1024;
+	int buffSize = 10240;
 	long fzCounter = 0;  // counts if we reached the filesize
 	ifstream filestream(filePath.c_str(), ifstream::binary);
 
