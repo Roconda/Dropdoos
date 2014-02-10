@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include <sstream>
 #include <fstream>
+#include <string.h>
 
 #include "CommandGet.h"
 #include "../Settings.h"
@@ -31,53 +32,63 @@ bool CommandGet::execute(){
 	string filePath = string(root).append(file);
 
 	// GET requested file does not exist.
-	if(!fs::exists(filePath)) {
+	if(!fs::exists(filePath) || !fs::is_regular_file(filePath)) {
 		sock->writeline("1");
 		return true;
 	}
 
 	sock->writeline("0");
 
+	int buffSize = 10240;
+	long fzCounter = 0;  // counts if we reached the filesize
+	ifstream filestream(filePath.c_str(), ios::binary);
+
 	// get filesize
 	ostringstream stream;
 	long filesize = fs::file_size(filePath);
-	stream << filesize;
-
-	// return filesize to client
-	sock->writeline((stream.str()).c_str());
-
-	int buffSize = 10240;
-	long fzCounter = 0;  // counts if we reached the filesize
-	ifstream filestream(filePath.c_str(), ifstream::binary);
-
 
 	if(filestream.is_open()) {
 		char* defaultBuffer = new char[buffSize];
 
+		ofstream ostr("/tmp/foto.png" , ios::binary);
+		ostr.seekp(0);
+
 		while(fzCounter != filesize) {
+
 			if((filesize-fzCounter) >= buffSize) {
 				filestream.read(defaultBuffer, sizeof(defaultBuffer));
-				sock->write(defaultBuffer);
+				ostr << filestream.rdbuf();
+				//sock->write(defaultBuffer);
 				fzCounter += buffSize;
 			}else{
+				int remainder = filesize-fzCounter;
+
 				// create small buffer
-				char* smallBuff = new char[filesize-fzCounter];
+				char* smallBuff = new char[remainder];
 
 				filestream.read(smallBuff, sizeof(smallBuff));
-				sock->write(smallBuff);
-				fzCounter += filesize-fzCounter;
+				ostr << filestream.rdbuf();
+				//sock->write(smallBuff);
+				fzCounter += remainder;
 
+				ostr.close();
 				delete [] smallBuff;
 			}
+
+			filestream.clear();
 		}
 
 		delete [] defaultBuffer;
-		sock->writeline("0");
 		filestream.close();
+		ostr.close();
+		sock->writeline("0");
+
+		return true;
+	}else{
+		filestream.close();
+		sock->writeline("10");
+
 		return true;
 	}
 
-	sock->writeline("10");
-	filestream.close();
-	return true;
 }
