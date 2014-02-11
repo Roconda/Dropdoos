@@ -43,44 +43,43 @@ bool CommandGet::execute(){
 	long fzCounter = 0;  // counts if we reached the filesize
 	ifstream filestream(filePath.c_str(), ios::binary);
 
-	// get filesize
+	// create stream
 	ostringstream stream;
 	long filesize = fs::file_size(filePath);
 
 	if(filestream.is_open()) {
 		char* defaultBuffer = new char[buffSize];
 
-		ofstream ostr("/tmp/foto.png" , ios::binary);
-		ostr.seekp(0);
+		filestream.seekg(filestream.beg);
 
 		while(fzCounter != filesize) {
 
 			if((filesize-fzCounter) >= buffSize) {
-				filestream.read(defaultBuffer, sizeof(defaultBuffer));
-				ostr << filestream.rdbuf();
-				//sock->write(defaultBuffer);
+				// Chunk is large enough, use default buffer
+				filestream.read(defaultBuffer, buffSize);
+				sock->write(defaultBuffer, buffSize);
+
 				fzCounter += buffSize;
 			}else{
+				// Chunk is too small, create a tiny buffer
 				int remainder = filesize-fzCounter;
 
 				// create small buffer
 				char* smallBuff = new char[remainder];
 
-				filestream.read(smallBuff, sizeof(smallBuff));
-				ostr << filestream.rdbuf();
-				//sock->write(smallBuff);
+				filestream.read(smallBuff, remainder);
+				sock->write(smallBuff, remainder);
+
 				fzCounter += remainder;
 
-				ostr.close();
 				delete [] smallBuff;
 			}
 
-			filestream.clear();
 		}
 
 		delete [] defaultBuffer;
+
 		filestream.close();
-		ostr.close();
 		sock->writeline("0");
 
 		return true;
