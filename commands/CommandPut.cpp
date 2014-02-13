@@ -48,9 +48,9 @@ bool CommandPut::execute(){
 
 	if(stream.is_open()) {
 		char* buffer = new char[buffSize];
-		int timer = 0;
+
 		while(fzCounter != fSize) {
-			timer++;
+
 			if((fSize-fzCounter) >= buffSize) {
 				// incoming file is at least the buffer's size
 				sock->read(buffer, buffSize);
@@ -69,6 +69,7 @@ bool CommandPut::execute(){
 
 				delete [] smallBuffer;
 			}
+
 		}
 
 		delete [] buffer;
@@ -82,4 +83,5 @@ bool CommandPut::execute(){
 
 	sock->writeline("0");
 	return true;
+
 }
