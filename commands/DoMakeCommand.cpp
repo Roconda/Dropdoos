@@ -7,6 +7,7 @@
 #include "CommandRen.h"
 #include "CommandCreate.h"
 #include "CommandGet.h"
+#include "CommandPut.h"
 #include "string.h"
 #include "iostream"
 
@@ -29,6 +30,8 @@ ICommand* DoMakeCommand::makeCommand(std::string& name) {
 		return new CommandCreate();
 	else if(name.compare("GET") == 0)
 		return new CommandGet();
+	else if(name.compare("PUT") == 0)
+		return new CommandPut();
 	else
 		return new CommandNotFound();
 }
