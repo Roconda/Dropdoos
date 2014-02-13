@@ -30,8 +30,10 @@ bool CommandCreate::execute(){
 		sock->writeline("3");
 	else if(fs::create_directories(fullPath.c_str()))
 		sock->writeline("0");
+	else if(fs::is_directory(fullPath.c_str()))
+		sock->writeline("0");
 	else
-		sock->writeline("4");
+		sock->writeline("10");
 
 	return true;
 }

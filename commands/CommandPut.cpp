@@ -34,7 +34,7 @@ bool CommandPut::execute(){
 	cout << fSize << endl;
 
 	if(file.empty()) {
-		sock->writeline("2");
+		sock->writeline("3");
 		return true;
 	}
 

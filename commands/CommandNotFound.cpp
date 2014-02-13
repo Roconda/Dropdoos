@@ -9,6 +9,6 @@ void CommandNotFound::read(char* c){
 }
 
 bool CommandNotFound::execute() {
-	sock->write("2\r\n");
+	sock->writeline("2");
     return true;
 }
